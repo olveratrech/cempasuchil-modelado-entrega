@@ -1,26 +1,43 @@
-# Compilación
-build/
-build-*/
-out/
-.vs/
+# Carpetas generadas por CMake, Xcode, Visual Studio o Make.
+/build/
+/build-*/
+/cmake-build-*/
+/out/
+/.vs/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+*.xcuserstate
+*.dSYM/
+
+# Ejecutables y archivos intermedios. El código se compila en cada plataforma.
 *.exe
+*.o
 *.obj
+*.a
 *.pdb
 *.ilk
 
-# Archivos generados al ejecutar
+# Registros y archivos temporales de ejecución.
 registro.txt
-imgui.ini
-cempasuchil_*.png
+*.log
+*.tmp
 
-# Blender: respaldos y vistas previas regenerables
+# En doc/ se publica únicamente el PDF final, no el fuente ni los
+# auxiliares e imágenes usados para compilarlo.
+/doc/**
+!/doc/Equipo-8-modelado.pdf
+
+# Archivos locales del sistema y de edición.
+.DS_Store
+*~
+*.swp
+*.bak
 *.blend1
 *.blend2
-Modelado/render/
-
-# Python
 __pycache__/
 *.pyc
-
-.DS_Store
-validacion/

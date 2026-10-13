@@ -61,7 +61,7 @@ bool App::iniciar() {
         op_.ancho = std::max(960, w * 4 / 5);
         op_.alto = std::max(540, h * 4 / 5);
     }
-    ventana_ = glfwCreateWindow(op_.ancho, op_.alto, "Camino de Cempasuchil | Entrega de modelado",
+    ventana_ = glfwCreateWindow(op_.ancho, op_.alto, "Cempasúchil | Modelado",
                                nullptr, nullptr);
     if (!ventana_) {
         registro::fatal("No se pudo crear la ventana. Se requiere una tarjeta gráfica compatible con OpenGL 3.3.");
@@ -127,7 +127,7 @@ void App::alTeclear(GLFWwindow* v, int tecla, int codigo, int accion, int mods) 
     switch (tecla) {
         case GLFW_KEY_ESCAPE: glfwSetWindowShouldClose(v, GLFW_TRUE); break;
         case GLFW_KEY_F2: a.renderer_.alambre = !a.renderer_.alambre; break;
-        case GLFW_KEY_HOME: a.aplicarVista(0); break;
+        case GLFW_KEY_R: a.aplicarVista(0); break;
         default: break;
     }
 }

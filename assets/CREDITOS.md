@@ -1,11 +1,13 @@
 # Créditos y licencias
 
-Los modelos propios se reutilizan del proyecto Camino de Cempasúchil del equipo,
-checkpoint `estable-arco-florido` (`c250473`). Sus materiales se simplificaron
-para esta entrega; se conservan geometría y jerarquías.
-
 Los modelos de librería proceden de **Kenney — Graveyard Kit 5.0**,
-licencia CC0: https://kenney.nl/assets/graveyard-kit. Se conserva el archivo
-`models/libreria/kenney_graveyard/License.txt` y los recursos originales de esa colección.
+licencia CC0: https://kenney.nl/assets/graveyard-kit. 
 
-Las bibliotecas utilizadas y sus licencias se describen en `external/README.md`.
+## Bibliotecas de terceros
+
+| Biblioteca | Uso | Licencia incluida |
+|---|---|---|
+| [GLFW](https://www.glfw.org/) | Ventana, contexto OpenGL y entrada | `external/glfw/LICENSE.md` |
+| [GLAD](https://github.com/Dav1dde/glad) | Carga de funciones OpenGL | `external/glad/LICENSE` |
+| [GLM](https://github.com/g-truc/glm) | Vectores, matrices y cuaterniones | `external/glm/copying.txt` |
+| [cgltf](https://github.com/jkuhlmann/cgltf) | Lectura de glTF y GLB | Licencia MIT al final de `external/cgltf/cgltf.h` |

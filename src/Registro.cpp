@@ -53,7 +53,7 @@ void fatal(const char* formato, ...) {
     va_end(args);
     error("%s", buffer);
 #ifdef _WIN32
-    MessageBoxA(nullptr, buffer, "Camino de Cempasuchil", MB_OK | MB_ICONERROR);
+    MessageBoxA(nullptr, buffer, "Cempasúchil", MB_OK | MB_ICONERROR);
 #endif
 }
 

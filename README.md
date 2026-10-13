@@ -1,4 +1,4 @@
-# Camino de Cempasúchil — Modelado
+# Cempasúchil — Modelado
 
 Visor 3D de un altar de Día de Muertos y su entorno. Esta entrega presenta los modelos en gris mate, con iluminación sencilla y vista de alambre. Para el desarrollo, las pruebas y los resultados consulta [la documentación](doc/Equipo-8-modelado.pdf).
 

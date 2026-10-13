@@ -11,27 +11,13 @@
 bool Renderer::iniciar() {
     bool ok = shader_.cargar(rutas::shader("escena.vert"), rutas::shader("escena.frag"));
     ok = ok && shaderInst_.cargar(rutas::shader("escena.vert"), rutas::shader("escena.frag"), "#define INSTANCIADO\n");
-    ok = ok && shaderLinea_.cargar(rutas::shader("linea.vert"), rutas::shader("linea.frag"));
-    if (!ok) return false;
-    glGenVertexArrays(1, &vaoLinea_);
-    glGenBuffers(1, &vboLinea_);
-    glBindVertexArray(vaoLinea_);
-    glBindBuffer(GL_ARRAY_BUFFER, vboLinea_);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
-    glBindVertexArray(0);
-    return true;
+    return ok;
 }
 
 void Renderer::liberar() {
     shader_.liberar();
     shaderInst_.liberar();
-    shaderLinea_.liberar();
-    if (vaoLinea_) glDeleteVertexArrays(1, &vaoLinea_);
-    if (vboLinea_) glDeleteBuffers(1, &vboLinea_);
-    vaoLinea_ = vboLinea_ = 0;
+
 }
 
 // Extrae los 6 planos del volumen de visión de la matriz vista-proyección
@@ -60,9 +46,8 @@ static float escalaMaxima(const glm::mat4& m) {
     return std::max({glm::length(glm::vec3(m[0])), glm::length(glm::vec3(m[1])), glm::length(glm::vec3(m[2]))});
 }
 
-void Renderer::recolectar(Nodo* n, const glm::vec3& ojo, const glm::vec4& tintePadre) {
+void Renderer::recolectar(Nodo* n) {
     if (!n->visible) return;
-    const glm::vec4 tinte = tintePadre * n->tinte;
     if (n->modelo && n->malla >= 0) {
         const Malla& malla = n->modelo->mallas[static_cast<size_t>(n->malla)];
         float esc = escalaMaxima(n->mundo);
@@ -77,8 +62,8 @@ void Renderer::recolectar(Nodo* n, const glm::vec3& ojo, const glm::vec4& tinteP
             d.prim = &p;
             d.mat = &n->modelo->materiales[static_cast<size_t>(p.material)];
             d.matriz = n->mundo;
-            d.distancia = glm::length(c - ojo);
-            d.tinte = tinte;
+
+
             opacos_.push_back(d);
         }
     }
@@ -98,8 +83,8 @@ void Renderer::recolectar(Nodo* n, const glm::vec3& ojo, const glm::vec4& tinteP
                     d.padre = n->mundo;
                     d.lote = &L;
                     d.vaoInstancias = L.vaosDe(e)[k];
-                    d.distancia = glm::length(c - ojo);
-                    d.tinte = tinte;
+
+
                     opacos_.push_back(d);
                 }
             }
@@ -107,7 +92,7 @@ void Renderer::recolectar(Nodo* n, const glm::vec3& ojo, const glm::vec4& tinteP
             stats.descartados += static_cast<int>(L.modelo->plano.size());
         }
     }
-    for (auto& h : n->hijos) recolectar(h.get(), ojo, tinte);
+    for (auto& h : n->hijos) recolectar(h.get());
 }
 
 void Renderer::aplicarMaterial(const Shader&, const Material& m) {
@@ -118,7 +103,6 @@ void Renderer::aplicarMaterial(const Shader&, const Material& m) {
 void Renderer::emitir(const Dibujo& d) {
     const Shader& s = d.lote ? shaderInst_ : shader_;
     aplicarMaterial(s, *d.mat);
-    s.set("uTinte", d.tinte);
     if (d.lote) {
         s.set("uPadre", d.padre);
         s.set("uModelo", d.matriz);
@@ -136,13 +120,12 @@ void Renderer::emitir(const Dibujo& d) {
     stats.llamadas++;
 }
 
-void Renderer::dibujar(Nodo* raiz, const Camara& camara, int ancho, int alto, const Skybox* cielo) {
+void Renderer::dibujar(Nodo* raiz, const Camara& camara, int ancho, int alto) {
     stats = Estadisticas{};
     float aspecto = alto > 0 ? static_cast<float>(ancho) / static_cast<float>(alto) : 1.0f;
     glm::mat4 vista = camara.vista();
     glm::mat4 proy = camara.proyeccion(aspecto);
     vistaProy_ = proy * vista;
-    ojo_ = camara.ojo();
 
     glm::vec4 planos[6];
     extraerPlanos(vistaProy_, planos);
@@ -152,15 +135,7 @@ void Renderer::dibujar(Nodo* raiz, const Camara& camara, int ancho, int alto, co
     }
 
     opacos_.clear();
-    mezcla_.clear();
-    recolectar(raiz, ojo_, glm::vec4(1.0f));
-    // agrupar por textura reduce cambios de estado en la GPU
-    std::sort(opacos_.begin(), opacos_.end(), [](const Dibujo& a, const Dibujo& b) {
-        if ((a.lote != nullptr) != (b.lote != nullptr)) return a.lote == nullptr;
-        return a.mat->textura < b.mat->textura;
-    });
-    std::sort(mezcla_.begin(), mezcla_.end(), [](const Dibujo& a, const Dibujo& b) { return a.distancia > b.distancia; });
-
+    recolectar(raiz);
     glViewport(0, 0, ancho, alto);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);

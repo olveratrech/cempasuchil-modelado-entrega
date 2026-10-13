@@ -5,7 +5,6 @@
 // replicarla como nodos editables y, más adelante, animarla.
 #pragma once
 
-#include "render/Texture.h"
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -23,22 +22,9 @@ struct Vertice {
     glm::vec2 uv;
 };
 
-enum class ModoAlfa { Opaco, Recorte, Mezcla };
-
 struct Material {
     std::string nombre = "material";
-    glm::vec4 color{1.0f};              // baseColorFactor (lineal)
-    const Textura* textura = nullptr;    // baseColorTexture (sRGB)
-    glm::vec3 emision{0.0f};            // emissiveFactor * emissiveStrength
-    float metalico = 0.0f;
-    float rugosidad = 1.0f;
-    // Capa transparente del material de Blender.
-    float capa = 0.0f;
-    float rugosidadCapa = 0.0f;
-    ModoAlfa alfa = ModoAlfa::Opaco;
-    float corte = 0.5f;                  // alphaCutoff para el modo Recorte
     bool dobleCara = false;
-    glm::vec2 escalaUV{1.0f};            // repetición adicional (suelo y camino procedurales)
 };
 
 struct Primitiva {
@@ -48,9 +34,6 @@ struct Primitiva {
     int vertices = 0;
     int material = 0;
     glm::vec3 min{0.0f}, max{0.0f};          // caja envolvente local
-    // copia en CPU de la geometría para la selección precisa con el ratón (rayo-triángulo)
-    std::vector<glm::vec3> posiciones;
-    std::vector<uint32_t> triangulos;
 };
 
 struct Malla {
@@ -90,7 +73,7 @@ public:
     float radio() const { return glm::length(max - min) * 0.5f; }
     glm::vec3 centro() const { return (min + max) * 0.5f; }
 
-    bool cargar(const std::string& ruta, CacheTexturas& texturas);
+    bool cargar(const std::string& ruta);
     static std::unique_ptr<Modelo> procedural(const std::string& nombre, const std::vector<Vertice>& vertices,
                                               const std::vector<uint32_t>& indices, const Material& material);
     void liberar();

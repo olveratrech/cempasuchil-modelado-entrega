@@ -5,22 +5,12 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-#include <stb_image_write.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
-#include <ctime>
-#include <filesystem>
-#include <limits>
-#include <vector>
 
-namespace fs = std::filesystem;
 
 static App* g_app = nullptr;
 
@@ -31,22 +21,11 @@ int App::ejecutar(const Opciones& opciones) {
         return 1;
     }
 
-    int cuadros = 0;
-    double anterior = glfwGetTime(), acumulado = 0.0;
-    int cuadrosFps = 0;
+    double anterior = glfwGetTime();
     while (!glfwWindowShouldClose(ventana_)) {
         double ahora = glfwGetTime();
         float dt = static_cast<float>(std::min(ahora - anterior, 0.1));
         anterior = ahora;
-        acumulado += dt;
-        ++cuadrosFps;
-        if (acumulado >= 0.5) {
-            fps_ = static_cast<float>(cuadrosFps / acumulado);
-            msCuadro_ = static_cast<float>(acumulado * 1000.0 / cuadrosFps);
-            acumulado = 0.0;
-            cuadrosFps = 0;
-        }
-
         glfwPollEvents();
         glfwGetFramebufferSize(ventana_, &anchoFb_, &altoFb_);
         if (anchoFb_ == 0 || altoFb_ == 0) {  // ventana minimizada
@@ -54,17 +33,9 @@ int App::ejecutar(const Opciones& opciones) {
             continue;
         }
         procesarEntrada(dt);
-        if (tiempoMensaje_ > 0.0f) tiempoMensaje_ -= dt;
 
-        renderer_.dibujar(escena_.raiz(), camara_, anchoFb_, altoFb_, nullptr);
+        renderer_.dibujar(escena_.raiz(), camara_, anchoFb_, altoFb_);
 
-        dibujarInterfaz();
-
-        ++cuadros;
-        if (!op_.captura.empty() && cuadros == op_.frames) {
-            capturar(op_.captura);
-            glfwSetWindowShouldClose(ventana_, GLFW_TRUE);
-        }
         glfwSwapBuffers(ventana_);
     }
     terminar();
@@ -110,32 +81,18 @@ bool App::iniciar() {
         registro::fatal("No se pudieron compilar los shaders (carpeta shaders/).");
         return false;
     }
-    auto t0 = std::chrono::steady_clock::now();
     if (!escena_.cargar()) {
         registro::fatal("No se pudieron cargar los modelos (carpeta assets/).");
         return false;
     }
-    double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
-    registro::info("Carga de geometria: %.0f ms", ms);
-
-    renderer_.alambre = op_.alambre;
-    // ImGui instala sus callbacks primero; los nuestros reemplazan teclado, rueda y
-    // botones del ratón y le reenvían los eventos.
-    iniciarInterfaz();
     glfwSetKeyCallback(ventana_, alTeclear);
     glfwSetScrollCallback(ventana_, alDesplazar);
     glfwSetMouseButtonCallback(ventana_, alPulsar);
-    mostrarInterfaz_ = !op_.sinInterfaz;
-    aplicarVista(op_.vista >= 1 ? op_.vista - 1 : 0);
+    aplicarVista(0);
     return true;
 }
 
 void App::terminar() {
-    if (ImGui::GetCurrentContext()) {
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
-    }
     escena_.liberar();
     renderer_.liberar();
     if (ventana_) glfwDestroyWindow(ventana_);
@@ -153,7 +110,6 @@ void App::procesarEntrada(float dt) {
     float dx = float(x - ultimoX_), dy = float(y - ultimoY_);
     ultimoX_ = x; ultimoY_ = y;
     if (arrastrando_) camara_.girar(dx, dy);
-    if (ImGui::GetIO().WantCaptureKeyboard) return;
     auto tecla = [&](int k) { return glfwGetKey(ventana_, k) == GLFW_PRESS; };
     glm::vec3 d(0.0f);
     if (tecla(GLFW_KEY_W)) d.z += 1;
@@ -166,28 +122,24 @@ void App::procesarEntrada(float dt) {
 }
 
 void App::alTeclear(GLFWwindow* v, int tecla, int codigo, int accion, int mods) {
-    ImGui_ImplGlfw_KeyCallback(v, tecla, codigo, accion, mods);
-    if (accion != GLFW_PRESS || ImGui::GetIO().WantCaptureKeyboard) return;
+    if (accion != GLFW_PRESS) return;
     App& a = *g_app;
     switch (tecla) {
         case GLFW_KEY_ESCAPE: glfwSetWindowShouldClose(v, GLFW_TRUE); break;
         case GLFW_KEY_F2: a.renderer_.alambre = !a.renderer_.alambre; break;
-        case GLFW_KEY_F4: a.mostrarInterfaz_ = !a.mostrarInterfaz_; break;
         case GLFW_KEY_HOME: a.aplicarVista(0); break;
         default: break;
     }
 }
 
 void App::alDesplazar(GLFWwindow* v, double dx, double dy) {
-    ImGui_ImplGlfw_ScrollCallback(v, dx, dy);
-    if (!ImGui::GetIO().WantCaptureMouse) g_app->camara_.acercar(float(dy));
+    g_app->camara_.acercar(float(dy));
 }
 
 void App::alPulsar(GLFWwindow* v, int boton, int accion, int mods) {
-    ImGui_ImplGlfw_MouseButtonCallback(v, boton, accion, mods);
     if (boton != GLFW_MOUSE_BUTTON_RIGHT) return;
     App& a = *g_app;
-    if (accion == GLFW_PRESS && !ImGui::GetIO().WantCaptureMouse) {
+    if (accion == GLFW_PRESS) {
         a.arrastrando_ = true;
         glfwSetInputMode(v, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwGetCursorPos(v, &a.ultimoX_, &a.ultimoY_);
@@ -200,24 +152,6 @@ void App::alPulsar(GLFWwindow* v, int boton, int accion, int mods) {
 void App::aplicarVista(int indice) {
     const auto& vistas = escena_.vistas();
     if (indice < 0 || indice >= static_cast<int>(vistas.size())) return;
-    vistaActual_ = indice;
     camara_.posicion = vistas[static_cast<size_t>(indice)].posicion;
     camara_.mirarHacia(vistas[static_cast<size_t>(indice)].objetivo);
-}
-
-void App::capturar(const std::string& ruta) {
-    std::vector<unsigned char> px(static_cast<size_t>(anchoFb_) * altoFb_ * 3);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadBuffer(GL_BACK);
-    glReadPixels(0, 0, anchoFb_, altoFb_, GL_RGB, GL_UNSIGNED_BYTE, px.data());
-    stbi_flip_vertically_on_write(1);
-    bool ok = stbi_write_png(ruta.c_str(), anchoFb_, altoFb_, 3, px.data(), anchoFb_ * 3) != 0;
-    if (ok) {
-        registro::info("Captura guardada en %s", ruta.c_str());
-        mensaje_ = "Captura guardada: " + ruta;
-    } else {
-        registro::error("No se pudo guardar la captura en %s", ruta.c_str());
-        mensaje_ = "No se pudo guardar la captura";
-    }
-    tiempoMensaje_ = 4.0f;
 }

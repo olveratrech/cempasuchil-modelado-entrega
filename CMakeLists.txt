@@ -33,43 +33,34 @@ add_subdirectory(external/glfw EXCLUDE_FROM_ALL)
 add_library(glad STATIC external/glad/src/glad.c)
 target_include_directories(glad PUBLIC external/glad/include)
 
-add_library(imgui STATIC
-    external/imgui/imgui.cpp
-    external/imgui/imgui_draw.cpp
-    external/imgui/imgui_tables.cpp
-    external/imgui/imgui_widgets.cpp
-    external/imgui/backends/imgui_impl_glfw.cpp
-    external/imgui/backends/imgui_impl_opengl3.cpp)
-target_include_directories(imgui PUBLIC external/imgui external/imgui/backends)
-target_link_libraries(imgui PUBLIC glfw)
-
 # --------------------------------------------------------------------------
 # Programa
 # --------------------------------------------------------------------------
 add_executable(ModeladoCempasuchil
     src/main.cpp
     src/App.cpp
-    src/Interfaz.cpp
     src/Registro.cpp
     src/Rutas.cpp
     src/render/Shader.cpp
-    src/render/Texture.cpp
     src/render/Model.cpp
     src/render/Renderer.cpp
-    src/render/Skybox.cpp
     src/scene/Camera.cpp
     src/scene/SceneNode.cpp
     src/scene/Camino.cpp
     src/scene/Escena.cpp
     src/bibliotecas.cpp)
 
+# Generar un esquema compartido con ejecutable de Run definido.
+set_target_properties(ModeladoCempasuchil PROPERTIES
+    XCODE_GENERATE_SCHEME TRUE
+    XCODE_SCHEME_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 target_include_directories(ModeladoCempasuchil PRIVATE
     src
     external/glm
-    external/cgltf
-    external/stb)
+    external/cgltf)
 
-target_link_libraries(ModeladoCempasuchil PRIVATE glfw glad imgui)
+target_link_libraries(ModeladoCempasuchil PRIVATE glfw glad)
 target_compile_definitions(ModeladoCempasuchil PRIVATE GLM_ENABLE_EXPERIMENTAL)
 
 if(MSVC)

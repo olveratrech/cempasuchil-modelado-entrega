@@ -102,19 +102,6 @@ void Nodo::colocar(const glm::vec3& p, const glm::vec3& rotGrados, const glm::ve
     posicion = p;
     rotacion = rotGrados;
     escala = esc;
-    guardarInicial();
-}
-
-void Nodo::guardarInicial() {
-    pos0_ = posicion;
-    rot0_ = rotacion;
-    esc0_ = escala;
-}
-
-void Nodo::restablecer() {
-    posicion = pos0_;
-    rotacion = rot0_;
-    escala = esc0_;
 }
 
 glm::mat4 Nodo::matrizLocal() const {

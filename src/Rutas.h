@@ -13,7 +13,5 @@ bool inicializar(const char* argv0);
 const std::string& base();
 std::string asset(const std::string& relativa);
 std::string shader(const std::string& nombre);
-// Carpeta donde se guardan capturas de pantalla (Imágenes del usuario si existe).
-std::string carpetaCapturas();
 
 }  // namespace rutas

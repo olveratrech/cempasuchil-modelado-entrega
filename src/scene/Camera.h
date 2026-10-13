@@ -1,4 +1,4 @@
-// Camera.h - Cámara libre (vuelo) y cámara orbital para la galería de modelos.
+// Camera.h - Cámara libre para recorrer la escena.
 #pragma once
 
 #include <glm/glm.hpp>
@@ -17,14 +17,10 @@ public:
     float cerca = 0.05f;
     float lejos = 400.0f;
 
-    // --- modo orbital (galería) -------------------------------------------------
-    bool orbital = false;
-    glm::vec3 objetivo{0.0f};
-    float distancia = 3.0f;
 
     glm::vec3 frente() const;
     glm::vec3 derecha() const;
-    glm::vec3 ojo() const;  // posición efectiva (libre u orbital)
+    glm::vec3 ojo() const;  // posición de la cámara
     glm::mat4 vista() const;
     glm::mat4 proyeccion(float aspecto) const;
 

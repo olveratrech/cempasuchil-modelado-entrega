@@ -133,16 +133,15 @@ bool Escena::cargar() {
     };
     for (const auto& i : catalogo_)
         if (i.usos == 0) registro::info("Aviso: el modelo %s no se usa en la escena", i.clave.c_str());
-    registro::info("Escena lista: %d nodos, %d modelos distintos, %d instancias, %d texturas (%.1f MB)",
-                   raiz_->contarNodos(), totalModelosDistintos(), totalInstancias(), texturas.cantidad(),
-                   static_cast<double>(texturas.bytesGPU()) / (1024.0 * 1024.0));
+    registro::info("Escena lista: %d nodos, %d modelos, %d instancias",
+                   raiz_->contarNodos(), totalModelosDistintos(), totalInstancias());
     return true;
 }
 
 bool Escena::cargarModelos() {
     auto cargarUno = [&](const std::string& clave, const std::string& ruta, const Ficha& f, const char* origen) {
         auto m = std::make_unique<Modelo>();
-        if (!m->cargar(ruta, texturas)) return false;
+        if (!m->cargar(ruta)) return false;
         catalogo_.push_back({clave, f.titulo, f.descripcion, origen, m.get(), 0});
         modelos_[clave] = std::move(m);
         return true;
@@ -167,43 +166,14 @@ void Escena::crearProcedurales() {
         std::vector<uint32_t> idx = {0, 2, 1, 0, 3, 2};
         Material mat;
         mat.nombre = "tierra";
-        mat.textura = nullptr;  // Entrega sin texturas.
-        mat.escalaUV = glm::vec2(1.0f / 2.5f);  // una repetición cada 2.5 m
-        mat.color = glm::vec4(0.92f, 0.86f, 0.80f, 1.0f);
+
+
+
         modelos_["terreno"] = Modelo::procedural("terreno", vs, idx, mat);
         catalogo_.push_back({"terreno", "Terreno", "Plano de 200 x 200 m con textura repetida (2 triángulos).",
                              "Procedural", modelos_["terreno"].get(), 0});
     }
-    // Pedestal para la galería de modelos (cilindro de 24 lados)
-    {
-        std::vector<Vertice> vs;
-        std::vector<uint32_t> idx;
-        const int n = 24;
-        const float r = 1.0f, h = 0.08f;
-        for (int i = 0; i <= n; ++i) {
-            float a = 6.2831853f * static_cast<float>(i) / n;
-            glm::vec3 d(std::cos(a), 0, std::sin(a));
-            vs.push_back({d * r + glm::vec3(0, 0, 0), d, {static_cast<float>(i) / n * 4.0f, 0}});
-            vs.push_back({d * r + glm::vec3(0, h, 0), d, {static_cast<float>(i) / n * 4.0f, 0.1f}});
-        }
-        for (int i = 0; i < n; ++i) {
-            uint32_t b = static_cast<uint32_t>(2 * i);
-            idx.insert(idx.end(), {b, b + 1, b + 2, b + 1, b + 3, b + 2});
-        }
-        uint32_t centro = static_cast<uint32_t>(vs.size());
-        vs.push_back({{0, h, 0}, {0, 1, 0}, {0.5f, 0.5f}});
-        for (int i = 0; i <= n; ++i) {
-            float a = 6.2831853f * static_cast<float>(i) / n;
-            vs.push_back({{std::cos(a) * r, h, std::sin(a) * r}, {0, 1, 0}, {0.5f + std::cos(a) * 0.5f, 0.5f + std::sin(a) * 0.5f}});
-        }
-        for (int i = 0; i < n; ++i)
-            idx.insert(idx.end(), {centro, centro + 2 + static_cast<uint32_t>(i), centro + 1 + static_cast<uint32_t>(i)});
-        Material mat;
-        mat.nombre = "pedestal";
-        mat.textura = nullptr;  // Entrega sin texturas.
-        mat.color = glm::vec4(0.75f, 0.72f, 0.70f, 1.0f);
-        modelos_["pedestal"] = Modelo::procedural("pedestal", vs, idx, mat);
-    }
+
 }
 
 Modelo* Escena::modelo(const std::string& clave) {
@@ -234,8 +204,6 @@ void Escena::liberar() {
     raiz_.reset();
     lotes_.clear();
     modelos_.clear();
-    cielo.liberar();
-    texturas.liberar();
 }
 
 // ---------------------------------------------------------------------------
@@ -250,7 +218,6 @@ void Escena::replicar(const Modelo& m, int indice, Nodo* padre) {
     n->modelo = &m;
     n->malla = nm.malla;
     n->categoria = padre->categoria;
-    n->guardarInicial();
     Nodo* ptr = padre->agregar(std::move(n));
     for (int h : nm.hijos) replicar(m, h, ptr);
 }
@@ -327,7 +294,6 @@ void Escena::construirCasaYOfrenda() {
                              {0.02f * std::cos(glm::radians(a)), 0.18f, 0.02f * std::sin(glm::radians(a))}, a);
         f->rotacion.x = 12.0f;
         f->escala = glm::vec3(1.25f);
-        f->guardarInicial();
     }
     instanciar("vaso_agua", n2, "vaso_agua", {0.72f, sup, 0.22f});
     for (float s : {-1.0f, 1.0f})
@@ -374,7 +340,6 @@ void Escena::construirCasaYOfrenda() {
         for (float x : {-1.6f, 1.6f}) {
             Nodo* p = instanciar("papel_picado", casa, "papel_picado_portal_" + std::to_string(++k), {x, 2.45f, z});
             p->rotacion.y = azar(-4.0f, 4.0f);
-            p->guardarInicial();
         }
 
     // Faroles a los lados de la entrada del portal (el brazo apunta al centro)
@@ -391,7 +356,6 @@ void Escena::construirCasaYOfrenda() {
     for (const glm::vec3& p : {glm::vec3(-1.1f, 2.5f, 1.6f), glm::vec3(0.8f, 2.2f, 2.3f), glm::vec3(1.7f, 1.6f, 1.2f)}) {
         Nodo* m = instanciar("mariposa_monarca", casa, "mariposa_portal_" + std::to_string(++k), p, azar(0, 360), 1.5f);
         m->rotacion.x = azar(-15.0f, 15.0f);
-        m->guardarInicial();
     }
 }
 
@@ -418,8 +382,8 @@ void Escena::construirCamino() {
         camino.malla(2.7f, 1.6f, 0.008f, vs, idx);
         Material mat;
         mat.nombre = "empedrado";
-        mat.textura = nullptr;  // Entrega sin texturas.
-        mat.color = glm::vec4(0.85f, 0.83f, 0.80f, 1.0f);
+
+
         modelos_["camino_empedrado"] = Modelo::procedural("camino_empedrado", vs, idx, mat);
         catalogo_.push_back({"camino_empedrado", "Camino empedrado",
                              "Franja generada en código a partir de una spline Catmull-Rom centrípeta.", "Procedural",
@@ -438,8 +402,8 @@ void Escena::construirCamino() {
         camino.malla(ancho, ancho, 0.011f, vs, idx);
         Material mat;
         mat.nombre = "alfombra_petalos";
-        mat.textura = nullptr;  // Entrega sin texturas.
-        mat.alfa = ModoAlfa::Recorte;
+
+
         modelos_["alfombra_petalos"] = Modelo::procedural("alfombra_petalos", vs, idx, mat);
         catalogo_.push_back({"alfombra_petalos", "Alfombra de pétalos",
                              "Franja procedural con textura de pétalos y recorte alfa; los pétalos 3D instanciados "
@@ -493,7 +457,6 @@ void Escena::construirCamino() {
         instanciar("farol", par, "farol_der", -izq * 1.55f, haciaCasa);
         Nodo* papel = instanciar("papel_picado", par, "papel_picado", {0.0f, 2.52f, 0.0f}, alinearX(-izq));
         papel->escala = glm::vec3(3.1f / 3.0f, 1.0f, 1.0f);  // claro de 3.1 m entre postes
-        papel->guardarInicial();
     }
 
     // Bancas para descansar junto al camino
@@ -511,7 +474,6 @@ void Escena::construirCamino() {
         Nodo* m = instanciar("mariposa_monarca", grupo, "mariposa_" + std::to_string(++k), p, azar(0, 360), 1.5f);
         m->rotacion.x = azar(-20.0f, 20.0f);
         m->rotacion.z = azar(-15.0f, 15.0f);
-        m->guardarInicial();
     }
 
     // Personajes: una calaca camina hacia la ofrenda y un ánima la sigue

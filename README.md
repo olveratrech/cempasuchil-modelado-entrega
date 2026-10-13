@@ -16,8 +16,8 @@ Sin texturas visibles, metal, reflejos, emisión, cielo con textura, niebla,
 transparencias, recortes alfa, animación, selección, inspector ni galería.
 El papel picado y las alas muestran su geometría completa: los dibujos y recortes
 que antes dependían de texturas no forman parte de la malla. Vidrio y agua son opacos.
-Las imágenes originales permanecen como recursos de los glTF, pero la aplicación
-no las carga ni las muestrea. No se alteraron las mallas para simular esos detalles.
+Se retiraron las imágenes externas y sus referencias de los glTF propios. Los GLB
+de librería se conservan originales; el programa utiliza su geometría y no carga imágenes. No se alteraron las mallas para simular esos detalles.
 
 ## Abrir en Xcode (Mac M1)
 
@@ -44,12 +44,11 @@ CMake.app y en la instalación local de MATLAB; genera el proyecto y lo abre.
 | Mirar alrededor | Mantener botón derecho y mover el ratón |
 | Acelerar | Shift |
 | Ajustar velocidad de recorrido | Rueda del ratón |
-| Alternar sólido / alambre | F2 o casilla en pantalla |
-| Ocultar / mostrar controles | F4 |
-| Volver a la posición inicial | Botón en pantalla o Home |
+| Alternar sólido / alambre | F2 |
+| Volver a la posición inicial | Home (Fn + flecha izquierda en Mac) |
 | Salir | Esc |
 
-En Mac puede hacer falta **Fn + F2** o **Fn + F4** según los ajustes del teclado.
+En Mac puede hacer falta **Fn + F2** según los ajustes del teclado.
 El botón izquierdo no selecciona ni modifica objetos.
 
 ## Compilación portable
@@ -77,3 +76,18 @@ git push origin estable-entrega-modelado
 
 No se incluyen archivos compilados, cachés de Xcode ni capturas de prueba.
 Licencias y atribuciones: `LICENSE`, `assets/CREDITOS.md` y `external/README.md`.
+
+## Estructura y dependencias
+
+- `src/`: ventana, entrada, cámara, carga de modelos y dibujo de la escena.
+- `shaders/`: un shader de vértices y uno de fragmentos (gris mate).
+- `assets/models/`: geometría propia y de librería.
+- `external/`: GLFW (ventana y entrada), GLAD (OpenGL), GLM (matrices) y cgltf (modelos).
+
+No se incluyen ImGui, stb, menú, capturas, cargador de texturas ni skybox.
+Se conservan las jerarquías, el dibujo instanciado y el descarte por cámara para
+reutilizar la escena sin perjudicar el rendimiento. La simplificación no convierte
+el programa en un ejercicio de solo primitivas: sigue siendo un visor de modelos glTF.
+
+Para ver únicamente los archivos de entrega, omitiendo los generados y las
+fuentes internas de terceros: `tree -I 'build*|.git|external'`.

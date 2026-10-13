@@ -65,12 +65,8 @@ public:
     Nodo* buscar(const std::string& nombreBuscado);
 
     void colocar(const glm::vec3& p, const glm::vec3& rotGrados = glm::vec3(0.0f), const glm::vec3& esc = glm::vec3(1.0f));
-    void guardarInicial();
-    void restablecer();
     glm::mat4 matrizLocal() const;
     void actualizar(const glm::mat4& mundoPadre);
     int contarNodos() const;
 
-private:
-    glm::vec3 pos0_{0.0f}, rot0_{0.0f}, esc0_{1.0f};
 };

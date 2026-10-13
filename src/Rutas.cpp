@@ -60,15 +60,5 @@ std::string shader(const std::string& nombre) {
     return (fs::u8path(g_base) / "shaders" / fs::u8path(nombre)).u8string();
 }
 
-std::string carpetaCapturas() {
-    std::error_code ec;
-#ifdef _WIN32
-    if (const char* perfil = std::getenv("USERPROFILE")) {
-        fs::path p = fs::u8path(perfil) / "Pictures";
-        if (fs::exists(p, ec)) return p.u8string();
-    }
-#endif
-    return fs::current_path(ec).u8string();
-}
 
 }  // namespace rutas

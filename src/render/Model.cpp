@@ -67,13 +67,13 @@ Primitiva crearPrimitiva(const std::vector<Vertice>& vertices, const std::vector
     p.indices = static_cast<GLsizei>(indices.size());
     p.min = glm::vec3(1e30f);
     p.max = glm::vec3(-1e30f);
-    p.posiciones.reserve(vertices.size());
+
     for (const auto& v : vertices) {
         p.min = glm::min(p.min, v.pos);
         p.max = glm::max(p.max, v.pos);
-        p.posiciones.push_back(v.pos);
+
     }
-    p.triangulos = indices;
+
 
     glGenVertexArrays(1, &p.vao);
     glGenBuffers(1, &p.vbo);
@@ -102,10 +102,10 @@ Primitiva crearPrimitiva(const std::vector<Vertice>& vertices, const std::vector
 // ---------------------------------------------------------------------------
 // Carga glTF
 // ---------------------------------------------------------------------------
-bool Modelo::cargar(const std::string& rutaArchivo, CacheTexturas& texturas) {
+bool Modelo::cargar(const std::string& rutaArchivo) {
     ruta = rutaArchivo;
     nombre = fs::u8path(rutaArchivo).stem().u8string();
-    const std::string carpeta = fs::u8path(rutaArchivo).parent_path().u8string();
+
 
     cgltf_options opciones{};
     opciones.file.read = leerArchivo;
@@ -127,12 +127,12 @@ bool Modelo::cargar(const std::string& rutaArchivo, CacheTexturas& texturas) {
         Material mat;
         if (m.name) mat.nombre = m.name;
         // Se conserva la geometria, pero todos los materiales son opacos y mates.
-        mat.color = glm::vec4(0.55f, 0.55f, 0.55f, 1.0f);
-        mat.metalico = 0.0f;
-        mat.rugosidad = 0.8f;
-        mat.textura = nullptr;
-        mat.emision = glm::vec3(0.0f);
-        mat.alfa = ModoAlfa::Opaco;
+
+
+
+
+
+
         mat.dobleCara = m.double_sided;
         materiales.push_back(mat);
     }

@@ -12,7 +12,7 @@ glm::vec3 Camara::frente() const {
 
 glm::vec3 Camara::derecha() const { return glm::normalize(glm::cross(frente(), glm::vec3(0.0f, 1.0f, 0.0f))); }
 
-glm::vec3 Camara::ojo() const { return orbital ? objetivo - frente() * distancia : posicion; }
+glm::vec3 Camara::ojo() const { return posicion; }
 
 glm::mat4 Camara::vista() const {
     glm::vec3 o = ojo();
@@ -41,6 +41,5 @@ void Camara::desplazar(const glm::vec3& d, float dt, float multiplicador) {
 }
 
 void Camara::acercar(float pasos) {
-    if (orbital) distancia = std::clamp(distancia * std::pow(0.9f, pasos), 0.05f, 200.0f);
-    else velocidad = std::clamp(velocidad * std::pow(1.15f, pasos), 0.5f, 40.0f);
+    velocidad = std::clamp(velocidad * std::pow(1.15f, pasos), 0.5f, 40.0f);
 }

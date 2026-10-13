@@ -15,8 +15,6 @@
 #pragma once
 
 #include "render/Model.h"
-#include "render/Skybox.h"
-#include "render/Texture.h"
 #include "scene/Camino.h"
 #include "scene/SceneNode.h"
 
@@ -59,8 +57,6 @@ public:
     int totalInstancias() const;
     int totalModelosDistintos() const;
 
-    CacheTexturas texturas;
-    Skybox cielo;
     Camino camino;
 
 private:

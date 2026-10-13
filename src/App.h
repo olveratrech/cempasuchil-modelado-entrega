@@ -6,9 +6,7 @@
 #include <string>
 struct GLFWwindow;
 struct Opciones {
-    int ancho=0, alto=0, msaa=4, frames=4, vista=-1;
-    std::string captura;
-    bool sinInterfaz=false, alambre=false;
+    int ancho=0, alto=0, msaa=4;
 };
 class App {
 public:
@@ -18,9 +16,6 @@ private:
     void terminar();
     void procesarEntrada(float dt);
     void aplicarVista(int indice);
-    void capturar(const std::string& ruta);
-    void iniciarInterfaz();
-    void dibujarInterfaz();
     static void alTeclear(GLFWwindow*,int,int,int,int);
     static void alDesplazar(GLFWwindow*,double,double);
     static void alPulsar(GLFWwindow*,int,int,int);
@@ -29,9 +24,7 @@ private:
     Escena escena_;
     Renderer renderer_;
     Camara camara_;
-    bool mostrarInterfaz_=true, arrastrando_=false;
+    bool arrastrando_=false;
     double ultimoX_=0, ultimoY_=0;
-    int anchoFb_=1, altoFb_=1, vistaActual_=0;
-    float fps_=0, msCuadro_=0, tiempoMensaje_=0;
-    std::string mensaje_;
+    int anchoFb_=1, altoFb_=1;
 };

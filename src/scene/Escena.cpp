@@ -30,7 +30,9 @@ const Ficha kPropios[] = {
     {"calaverita_azucar", "Calaverita de azúcar", ""},
     {"papel_picado", "Papel picado", ""},
     {"sahumerio", "Sahumerio (popoxcomitl)", ""},
-    {"portarretrato", "Portarretrato", ""},
+    {"portarretrato_1", "Portarretrato 1", ""},
+    {"portarretrato_2", "Portarretrato 2", ""},
+    {"portarretrato_3", "Portarretrato 3", ""},
     {"jarron_talavera", "Jarrón de Talavera", ""},
     {"vaso_agua", "Vaso con agua", ""},
     {"maceta_cempasuchil", "Maceta con cempasúchil", ""},
@@ -295,9 +297,9 @@ void Escena::construirCasaYOfrenda() {
 
     // Nivel 3 (cielo): fotografías de los difuntos, cruz, veladoras y calaveritas
     instanciar("cross-wood", n3, "cruz", {0.0f, sup, -0.62f}, 0.0f, 0.5f);
-    instanciar("portarretrato", n3, "foto_izq", {-0.42f, sup, -0.30f}, 14.0f);
-    instanciar("portarretrato", n3, "foto_centro", {0.0f, sup, -0.36f});
-    instanciar("portarretrato", n3, "foto_der", {0.42f, sup, -0.30f}, -14.0f);
+    instanciar("portarretrato_1", n3, "foto_izq", {-0.42f, sup, -0.30f}, 14.0f);
+    instanciar("portarretrato_2", n3, "foto_centro", {0.0f, sup, -0.36f});
+    instanciar("portarretrato_3", n3, "foto_der", {0.42f, sup, -0.30f}, -14.0f);
     for (float s : {-1.0f, 1.0f}) {
         instanciar("veladora", n3, s < 0 ? "veladora_n3_izq" : "veladora_n3_der", {s * 0.60f, sup, -0.05f});
         instanciar("calaverita_azucar", n3, s < 0 ? "calaverita_n3_izq" : "calaverita_n3_der", {s * 0.22f, sup, -0.02f},

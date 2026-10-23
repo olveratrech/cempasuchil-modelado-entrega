@@ -1,301 +1,107 @@
 {
-  "asset": {
-    "copyright": "Equipo Camino de Cempasúchil - FI UNAM",
-    "generator": "Khronos glTF Blender I/O v5.2.40",
-    "version": "2.0"
-  },
-  "scene": 0,
-  "scenes": [
-    {
-      "name": "Scene",
-      "nodes": [
-        1
-      ]
-    }
-  ],
-  "nodes": [
-    {
-      "mesh": 0,
-      "name": "brasas",
-      "translation": [
-        0,
-        0.1080000028014183,
-        0
-      ]
-    },
-    {
-      "children": [
-        0
-      ],
-      "mesh": 1,
-      "name": "sahumerio"
-    }
-  ],
-  "materials": [
-    {
-      "name": "brasa",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "copal",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "barro",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    }
-  ],
-  "meshes": [
-    {
-      "name": "brasas",
-      "primitives": [
-        {
-          "attributes": {
-            "POSITION": 0,
-            "NORMAL": 1,
-            "TEXCOORD_0": 2
-          },
-          "indices": 3,
-          "material": 0
-        },
-        {
-          "attributes": {
-            "POSITION": 4,
-            "NORMAL": 5,
-            "TEXCOORD_0": 6
-          },
-          "indices": 7,
-          "material": 1
-        }
-      ]
-    },
-    {
-      "name": "sahumerio",
-      "primitives": [
-        {
-          "attributes": {
-            "POSITION": 8,
-            "NORMAL": 9,
-            "TEXCOORD_0": 10
-          },
-          "indices": 11,
-          "material": 2
-        }
-      ]
-    }
-  ],
-  "accessors": [
-    {
-      "bufferView": 0,
-      "componentType": 5126,
-      "count": 200,
-      "max": [
-        0.02614600583910942,
-        0.023503882810473442,
-        0.05018256604671478
-      ],
-      "min": [
-        -0.018726499751210213,
-        0,
-        -0.01578671671450138
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 1,
-      "componentType": 5126,
-      "count": 200,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 2,
-      "componentType": 5126,
-      "count": 200,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 3,
-      "componentType": 5123,
-      "count": 240,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 4,
-      "componentType": 5126,
-      "count": 150,
-      "max": [
-        0.03221780061721802,
-        0.023856544867157936,
-        0.04945947974920273
-      ],
-      "min": [
-        -0.004291561897844076,
-        0,
-        -0.04487176612019539
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 5,
-      "componentType": 5126,
-      "count": 150,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 6,
-      "componentType": 5126,
-      "count": 150,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 7,
-      "componentType": 5123,
-      "count": 180,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 8,
-      "componentType": 5126,
-      "count": 213,
-      "max": [
-        0.2013169527053833,
-        0.14168216288089752,
-        0.08399999886751175
-      ],
-      "min": [
-        -0.08399999886751175,
-        0,
-        -0.08399999886751175
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 9,
-      "componentType": 5126,
-      "count": 213,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 10,
-      "componentType": 5126,
-      "count": 213,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 11,
-      "componentType": 5123,
-      "count": 888,
-      "type": "SCALAR"
-    }
-  ],
-  "bufferViews": [
-    {
-      "buffer": 0,
-      "byteLength": 2400,
-      "byteOffset": 0,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 2400,
-      "byteOffset": 2400,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1600,
-      "byteOffset": 4800,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 480,
-      "byteOffset": 6400,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1800,
-      "byteOffset": 6880,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1800,
-      "byteOffset": 8680,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1200,
-      "byteOffset": 10480,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 360,
-      "byteOffset": 11680,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 2556,
-      "byteOffset": 12040,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 2556,
-      "byteOffset": 14596,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1704,
-      "byteOffset": 17152,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1776,
-      "byteOffset": 18856,
-      "target": 34963
-    }
-  ],
-  "buffers": [
-    {
-      "byteLength": 20632,
-      "uri": "sahumerio.bin"
-    }
-  ]
+	"asset":{
+		"generator":"Khronos glTF Blender I/O v5.2.40",
+		"version":"2.0"
+	},
+	"scene":0,
+	"scenes":[
+		{
+			"name":"sahumerio",
+			"nodes":[
+				0
+			]
+		}
+	],
+	"nodes":[
+		{
+			"mesh":0,
+			"name":"sahumerio"
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"name":"gris mate",
+			"pbrMetallicRoughness":{
+				"baseColorFactor":[
+					0.550000011920929,
+					0.550000011920929,
+					0.550000011920929,
+					1
+				],
+				"metallicFactor":0
+			}
+		}
+	],
+	"meshes":[
+		{
+			"name":"cuenco",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":0,
+						"NORMAL":1
+					},
+					"indices":2,
+					"material":0
+				}
+			]
+		}
+	],
+	"accessors":[
+		{
+			"bufferView":0,
+			"componentType":5126,
+			"count":175427,
+			"max":[
+				0.11407848447561264,
+				0.14168216288089752,
+				0.11407848447561264
+			],
+			"min":[
+				-0.11407848447561264,
+				0,
+				-0.11407848447561264
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":1,
+			"componentType":5126,
+			"count":175427,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":2,
+			"componentType":5125,
+			"count":410484,
+			"type":"SCALAR"
+		}
+	],
+	"bufferViews":[
+		{
+			"buffer":0,
+			"byteLength":2105124,
+			"byteOffset":0,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":2105124,
+			"byteOffset":2105124,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1641936,
+			"byteOffset":4210248,
+			"target":34963
+		}
+	],
+	"buffers":[
+		{
+			"byteLength":5852184,
+			"uri":"sahumerio.bin"
+		}
+	]
 }

@@ -26,7 +26,11 @@ const Ficha kPropios[] = {
     {"flor_cempasuchil", "Flor de cempasúchil", ""},
     {"petalo_cempasuchil", "Pétalo de cempasúchil", ""},
     {"veladora", "Veladora", "", "veladoras/"},
-    {"cirio", "Cirio con candelero", ""},
+    {"cirio_1", "Cirio casi nuevo", "", "cirios/"},
+    {"cirio_2", "Cirio poco consumido", "", "cirios/"},
+    {"cirio_3", "Cirio medio", "", "cirios/"},
+    {"cirio_4", "Cirio muy consumido", "", "cirios/"},
+    {"cirio_5", "Cirio remanente", "", "cirios/"},
     {"pan_de_muerto", "Pan de muerto", ""},
     {"calaverita_azucar", "Calaverita de azúcar", ""},
     {"papel_1", "Papel picado 1", "", "papel_picado/"},
@@ -329,7 +333,8 @@ void Escena::construirCasaYOfrenda() {
 
     // Nivel 1 (tierra): cirios, pan, veladoras, cazuela de mole y calaveritas
     for (float s : {-1.0f, 1.0f}) {
-        instanciar("cirio", n1, s < 0 ? "cirio_izq" : "cirio_der", {s * 1.05f, sup, 0.58f});
+        instanciar(s < 0 ? "cirio_2" : "cirio_3", n1, s < 0 ? "cirio_izq" : "cirio_der",
+                   {s * 1.05f, sup, 0.58f});
         instanciar("pan_de_muerto", n1, s < 0 ? "pan_izq" : "pan_der", {s * 0.70f, sup, 0.58f}, azar(0, 90));
         instanciar("veladora", n1, s < 0 ? "veladora_n1_izq" : "veladora_n1_der", {s * 0.40f, sup, 0.60f});
         instanciar("calaverita_azucar", n1, s < 0 ? "calaverita_n1_izq" : "calaverita_n1_der",
@@ -364,7 +369,11 @@ void Escena::construirCasaYOfrenda() {
                    -s * 10.0f, 0.75f);
     }
 
-    // Piso frente al altar: sahumerio, veladoras, macetas, calabazas y cruz de pétalos
+    // Piso frente al altar: cirios, sahumerio, veladoras, macetas, calabazas y cruz de pétalos
+    // Bases apoyadas en el portal, fuera de la cruz central y de las veladoras.
+    instanciar("cirio_1", ofrenda, "cirio_alto_piso", {-1.10f, 0.0f, 1.30f}, -8.0f);
+    instanciar("cirio_4", ofrenda, "cirio_consumido_piso", {1.05f, 0.0f, 1.25f}, 10.0f);
+    instanciar("cirio_5", ofrenda, "cirio_corto_piso", {1.23f, 0.0f, 1.45f}, -12.0f);
     instanciar("sahumerio", ofrenda, "sahumerio", {0.0f, 0.012f, 1.20f}, 35.0f);
     int k = 0;
     for (const glm::vec3& p : {glm::vec3(-0.55f, 0.012f, 1.0f), glm::vec3(0.55f, 0.012f, 1.0f),

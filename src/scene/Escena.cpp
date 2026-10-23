@@ -17,6 +17,7 @@ struct Ficha {
     const char* clave;
     const char* titulo;
     const char* descripcion;
+    const char* carpeta = "";
 };
 
 const Ficha kPropios[] = {
@@ -24,15 +25,15 @@ const Ficha kPropios[] = {
     {"arco_cempasuchil", "Arco de cempasúchil", ""},
     {"flor_cempasuchil", "Flor de cempasúchil", ""},
     {"petalo_cempasuchil", "Pétalo de cempasúchil", ""},
-    {"veladora", "Veladora", ""},
+    {"veladora", "Veladora", "", "veladoras/"},
     {"cirio", "Cirio con candelero", ""},
     {"pan_de_muerto", "Pan de muerto", ""},
     {"calaverita_azucar", "Calaverita de azúcar", ""},
-    {"papel_picado", "Papel picado", ""},
+    {"papel_picado", "Papel picado", "", "papel_picado/"},
     {"sahumerio", "Sahumerio (popoxcomitl)", ""},
-    {"portarretrato_1", "Portarretrato 1", ""},
-    {"portarretrato_2", "Portarretrato 2", ""},
-    {"portarretrato_3", "Portarretrato 3", ""},
+    {"portarretrato_1", "Portarretrato 1", "", "portarretratos/"},
+    {"portarretrato_2", "Portarretrato 2", "", "portarretratos/"},
+    {"portarretrato_3", "Portarretrato 3", "", "portarretratos/"},
     {"jarron_talavera", "Jarrón de Talavera", ""},
     {"vaso_agua", "Vaso con agua", ""},
     {"maceta_cempasuchil", "Maceta con cempasúchil", ""},
@@ -140,7 +141,7 @@ bool Escena::cargarModelos() {
         return true;
     };
     for (const Ficha& f : kPropios)
-        if (!cargarUno(f.clave, rutas::asset(std::string("models/propios/") + f.clave + ".gltf"), f, "Propio")) return false;
+        if (!cargarUno(f.clave, rutas::asset(std::string("models/propios/") + f.carpeta + f.clave + ".gltf"), f, "Propio")) return false;
     for (const Ficha& f : kLibreria)
         if (!cargarUno(f.clave, rutas::asset(std::string("models/libreria/kenney_graveyard/") + f.clave + ".glb"), f,
                        "Librería"))

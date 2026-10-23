@@ -1,203 +1,107 @@
 {
-  "asset": {
-    "copyright": "Equipo Camino de Cempasúchil - FI UNAM",
-    "generator": "Khronos glTF Blender I/O v5.2.40",
-    "version": "2.0"
-  },
-  "scene": 0,
-  "scenes": [
-    {
-      "name": "Scene",
-      "nodes": [
-        0
-      ]
-    }
-  ],
-  "nodes": [
-    {
-      "mesh": 0,
-      "name": "jarron_talavera"
-    }
-  ],
-  "materials": [
-    {
-      "name": "talavera",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "talavera_interior",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    }
-  ],
-  "meshes": [
-    {
-      "name": "jarron_talavera",
-      "primitives": [
-        {
-          "attributes": {
-            "POSITION": 0,
-            "NORMAL": 1,
-            "TEXCOORD_0": 2
-          },
-          "indices": 3,
-          "material": 0
-        },
-        {
-          "attributes": {
-            "POSITION": 4,
-            "NORMAL": 5,
-            "TEXCOORD_0": 6
-          },
-          "indices": 7,
-          "material": 1
-        }
-      ]
-    }
-  ],
-  "accessors": [
-    {
-      "bufferView": 0,
-      "componentType": 5126,
-      "count": 164,
-      "max": [
-        0.10724207013845444,
-        0.3050000071525574,
-        0.10999999940395355
-      ],
-      "min": [
-        -0.10724207013845444,
-        0,
-        -0.10999999940395355
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 1,
-      "componentType": 5126,
-      "count": 164,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 2,
-      "componentType": 5126,
-      "count": 164,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 3,
-      "componentType": 5123,
-      "count": 798,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 4,
-      "componentType": 5126,
-      "count": 60,
-      "max": [
-        0.07409451901912689,
-        0.3050000071525574,
-        0.07599999755620956
-      ],
-      "min": [
-        -0.07409451901912689,
-        0.25,
-        -0.07599999755620956
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 5,
-      "componentType": 5126,
-      "count": 60,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 6,
-      "componentType": 5126,
-      "count": 60,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 7,
-      "componentType": 5123,
-      "count": 252,
-      "type": "SCALAR"
-    }
-  ],
-  "bufferViews": [
-    {
-      "buffer": 0,
-      "byteLength": 1968,
-      "byteOffset": 0,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1968,
-      "byteOffset": 1968,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1312,
-      "byteOffset": 3936,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1596,
-      "byteOffset": 5248,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 720,
-      "byteOffset": 6844,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 720,
-      "byteOffset": 7564,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 480,
-      "byteOffset": 8284,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 504,
-      "byteOffset": 8764,
-      "target": 34963
-    }
-  ],
-  "buffers": [
-    {
-      "byteLength": 9268,
-      "uri": "jarron_talavera.bin"
-    }
-  ]
+	"asset":{
+		"generator":"Khronos glTF Blender I/O v5.2.40",
+		"version":"2.0"
+	},
+	"scene":0,
+	"scenes":[
+		{
+			"name":"jarron",
+			"nodes":[
+				0
+			]
+		}
+	],
+	"nodes":[
+		{
+			"mesh":0,
+			"name":"jarron_talavera"
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"name":"gris mate",
+			"pbrMetallicRoughness":{
+				"baseColorFactor":[
+					0.550000011920929,
+					0.550000011920929,
+					0.550000011920929,
+					1
+				],
+				"metallicFactor":0
+			}
+		}
+	],
+	"meshes":[
+		{
+			"name":"cuerpo",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":0,
+						"NORMAL":1
+					},
+					"indices":2,
+					"material":0
+				}
+			]
+		}
+	],
+	"accessors":[
+		{
+			"bufferView":0,
+			"componentType":5126,
+			"count":147068,
+			"max":[
+				0.10726702958345413,
+				0.3050000071525574,
+				0.10777048021554947
+			],
+			"min":[
+				-0.1074105054140091,
+				0,
+				-0.10688220709562302
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":1,
+			"componentType":5126,
+			"count":147068,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":2,
+			"componentType":5125,
+			"count":860496,
+			"type":"SCALAR"
+		}
+	],
+	"bufferViews":[
+		{
+			"buffer":0,
+			"byteLength":1764816,
+			"byteOffset":0,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1764816,
+			"byteOffset":1764816,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":3441984,
+			"byteOffset":3529632,
+			"target":34963
+		}
+	],
+	"buffers":[
+		{
+			"byteLength":6971616,
+			"uri":"jarron_talavera.bin"
+		}
+	]
 }

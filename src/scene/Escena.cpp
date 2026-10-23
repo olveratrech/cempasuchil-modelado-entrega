@@ -29,7 +29,12 @@ const Ficha kPropios[] = {
     {"cirio", "Cirio con candelero", ""},
     {"pan_de_muerto", "Pan de muerto", ""},
     {"calaverita_azucar", "Calaverita de azúcar", ""},
-    {"papel_picado", "Papel picado", "", "papel_picado/"},
+    {"papel_1", "Papel picado 1", "", "papel_picado/"},
+    {"papel_2", "Papel picado 2", "", "papel_picado/"},
+    {"papel_3", "Papel picado 3", "", "papel_picado/"},
+    {"papel_4", "Papel picado 4", "", "papel_picado/"},
+    {"papel_5", "Papel picado 5", "", "papel_picado/"},
+    {"papel_6", "Papel picado 6", "", "papel_picado/"},
     {"sahumerio", "Sahumerio (popoxcomitl)", ""},
     {"portarretrato_1", "Portarretrato 1", "", "portarretratos/"},
     {"portarretrato_2", "Portarretrato 2", "", "portarretratos/"},
@@ -168,6 +173,33 @@ void Escena::crearProcedurales() {
                              "Procedural", modelos_["terreno"].get(), 0});
     }
 
+    // Hilo de tres metros con caída suave; se reutiliza en todas las tiras.
+    {
+        std::vector<Vertice> vs;
+        std::vector<uint32_t> indices;
+        constexpr int tramos = 64, lados = 8;
+        constexpr float pi = 3.14159265f;
+        for (int j = 0; j <= tramos; ++j) {
+            float x = -1.5f + 3.0f * j / tramos;
+            float y = 0.18f * (x * x / 2.25f - 1.0f);
+            glm::vec3 arriba = glm::normalize(glm::vec3(-0.16f * x, 1.0f, 0.0f));
+            for (int k = 0; k < lados; ++k) {
+                float a = 2.0f * pi * k / lados;
+                glm::vec3 normal = arriba * std::cos(a) + glm::vec3(0, 0, std::sin(a));
+                vs.push_back({glm::vec3(x, y, 0) + normal * 0.003f, normal, {0, 0}});
+            }
+        }
+        for (int j = 0; j < tramos; ++j)
+            for (int k = 0; k < lados; ++k) {
+                uint32_t a = j * lados + k, b = j * lados + (k + 1) % lados;
+                indices.insert(indices.end(), {a, b, b + lados, a, b + lados, a + lados});
+            }
+        Material mat;
+        mat.nombre = "hilo";
+        modelos_["hilo_papel"] = Modelo::procedural("hilo_papel", vs, indices, mat);
+        catalogo_.push_back({"hilo_papel", "Hilo de papel picado", "", "Procedural", modelos_["hilo_papel"].get(), 0});
+    }
+
 }
 
 Modelo* Escena::modelo(const std::string& clave) {
@@ -253,6 +285,31 @@ Nodo* Escena::nodoLote(const std::string& clave, Nodo* padre, const std::string&
 // ---------------------------------------------------------------------------
 // Casa con portal y ofrenda
 // ---------------------------------------------------------------------------
+// Una tira es un grupo: hilo y ocho papeles con pivote en su borde superior.
+Nodo* Escena::crearTiraPapel(Nodo* padre, const std::string& nombre,
+                            const glm::vec3& posicion, float giro, float ancho, int variante) {
+    Nodo* tira = padre->agregar(nombre);
+    tira->colocar(posicion, {0.0f, giro, 0.0f});
+    Nodo* hilo = instanciar("hilo_papel", tira, "hilo", {0, 0, 0});
+    hilo->escala.x = ancho / 3.0f;
+    constexpr int cantidad = 8;
+    float paso = ancho / cantidad;
+    for (int i = 0; i < cantidad; ++i) {
+        std::string clave = "papel_" + std::to_string(1 + (i + variante) % 6);
+        const Modelo* m = modelo(clave);
+        float x = -ancho * 0.5f + paso * (i + 0.5f);
+        float y = 0.18f * (4.0f * x * x / (ancho * ancho) - 1.0f);
+        float pendiente = 1.44f * x / (ancho * ancho);
+        Nodo* soporte = tira->agregar("pliego_" + std::to_string(i + 1));
+        soporte->colocar({x, y, 0}, {0, 0, glm::degrees(std::atan(pendiente))});
+        float escala = paso * 0.85f / (m->max.x - m->min.x);
+        instanciar(clave, soporte, clave,
+                   {-0.5f * (m->min.x + m->max.x) * escala, -m->max.y * escala, 0},
+                   0.0f, escala);
+    }
+    return tira;
+}
+
 void Escena::construirCasaYOfrenda() {
     Azar azar;
     Nodo* casa = raiz_->agregar("Casa");
@@ -332,8 +389,9 @@ void Escena::construirCasaYOfrenda() {
     k = 0;
     for (float z : {1.75f, 2.75f})
         for (float x : {-1.6f, 1.6f}) {
-            Nodo* p = instanciar("papel_picado", casa, "papel_picado_portal_" + std::to_string(++k), {x, 2.45f, z});
-            p->rotacion.y = azar(-4.0f, 4.0f);
+            ++k;
+            crearTiraPapel(casa, "papel_picado_portal_" + std::to_string(k),
+                           {x, 2.45f, z}, azar(-4.0f, 4.0f), 3.0f, k - 1);
         }
 
     // Faroles a los lados de la entrada del portal (el brazo apunta al centro)
@@ -449,8 +507,7 @@ void Escena::construirCamino() {
         float haciaCasa = alinearX(camino.tangente(s));
         instanciar("farol", par, "farol_izq", izq * 1.55f, haciaCasa);
         instanciar("farol", par, "farol_der", -izq * 1.55f, haciaCasa);
-        Nodo* papel = instanciar("papel_picado", par, "papel_picado", {0.0f, 2.52f, 0.0f}, alinearX(-izq));
-        papel->escala = glm::vec3(3.1f / 3.0f, 1.0f, 1.0f);  // claro de 3.1 m entre postes
+        crearTiraPapel(par, "papel_picado", {0.0f, 2.52f, 0.0f}, alinearX(-izq), 3.1f, k + 1);
     }
 
     // Bancas para descansar junto al camino

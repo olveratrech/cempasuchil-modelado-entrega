@@ -64,6 +64,8 @@ private:
     void crearProcedurales();
     Lote* nuevoLote(const std::string& clave, Nodo* dueno);
     Nodo* nodoLote(const std::string& clave, Nodo* padre, const std::string& nombre);
+    Nodo* crearTiraPapel(Nodo* padre, const std::string& nombre, const glm::vec3& posicion,
+                         float giro, float ancho, int variante);
     void construirCasaYOfrenda();
     void construirCamino();
     void construirPanteon();

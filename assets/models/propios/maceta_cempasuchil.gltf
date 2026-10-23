@@ -1,377 +1,107 @@
 {
-  "asset": {
-    "copyright": "Equipo Camino de Cempasúchil - FI UNAM",
-    "generator": "Khronos glTF Blender I/O v5.2.40",
-    "version": "2.0"
-  },
-  "scene": 0,
-  "scenes": [
-    {
-      "name": "Scene",
-      "nodes": [
-        1
-      ]
-    }
-  ],
-  "nodes": [
-    {
-      "mesh": 0,
-      "name": "flores"
-    },
-    {
-      "children": [
-        0
-      ],
-      "mesh": 1,
-      "name": "maceta_cempasuchil"
-    }
-  ],
-  "materials": [
-    {
-      "name": "cempasuchil_petalo",
-      "doubleSided": true,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "cempasuchil_verde",
-      "doubleSided": true,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "barro",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    },
-    {
-      "name": "tierra_maceta",
-      "doubleSided": false,
-      "pbrMetallicRoughness": {
-        "baseColorFactor": [
-          0.55,
-          0.55,
-          0.55,
-          1
-        ],
-        "metallicFactor": 0,
-        "roughnessFactor": 0.8
-      }
-    }
-  ],
-  "meshes": [
-    {
-      "name": "flores",
-      "primitives": [
-        {
-          "attributes": {
-            "POSITION": 0,
-            "NORMAL": 1,
-            "TEXCOORD_0": 2
-          },
-          "indices": 3,
-          "material": 0
-        },
-        {
-          "attributes": {
-            "POSITION": 4,
-            "NORMAL": 5,
-            "TEXCOORD_0": 6
-          },
-          "indices": 7,
-          "material": 1
-        }
-      ]
-    },
-    {
-      "name": "maceta_cempasuchil",
-      "primitives": [
-        {
-          "attributes": {
-            "POSITION": 8,
-            "NORMAL": 9,
-            "TEXCOORD_0": 10
-          },
-          "indices": 11,
-          "material": 2
-        },
-        {
-          "attributes": {
-            "POSITION": 12,
-            "NORMAL": 13,
-            "TEXCOORD_0": 14
-          },
-          "indices": 15,
-          "material": 3
-        }
-      ]
-    }
-  ],
-  "accessors": [
-    {
-      "bufferView": 0,
-      "componentType": 5126,
-      "count": 1022,
-      "max": [
-        0.1513337641954422,
-        0.3389953374862671,
-        0.14862118661403656
-      ],
-      "min": [
-        -0.1628960818052292,
-        0.17864403128623962,
-        -0.15659844875335693
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 1,
-      "componentType": 5126,
-      "count": 1022,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 2,
-      "componentType": 5126,
-      "count": 1022,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 3,
-      "componentType": 5123,
-      "count": 2142,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 4,
-      "componentType": 5126,
-      "count": 105,
-      "max": [
-        0.10161303728818893,
-        0.2800000011920929,
-        0.09428291767835617
-      ],
-      "min": [
-        -0.10625797510147095,
-        0.1811041235923767,
-        -0.09866634011268616
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 5,
-      "componentType": 5126,
-      "count": 105,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 6,
-      "componentType": 5126,
-      "count": 105,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 7,
-      "componentType": 5123,
-      "count": 336,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 8,
-      "componentType": 5126,
-      "count": 116,
-      "max": [
-        0.13600000739097595,
-        0.21400000154972076,
-        0.13600000739097595
-      ],
-      "min": [
-        -0.13600000739097595,
-        0,
-        -0.13600000739097595
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 9,
-      "componentType": 5126,
-      "count": 116,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 10,
-      "componentType": 5126,
-      "count": 116,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 11,
-      "componentType": 5123,
-      "count": 540,
-      "type": "SCALAR"
-    },
-    {
-      "bufferView": 12,
-      "componentType": 5126,
-      "count": 25,
-      "max": [
-        0.1080000028014183,
-        0.19300000369548798,
-        0.1080000028014183
-      ],
-      "min": [
-        -0.1080000028014183,
-        0.1850000023841858,
-        -0.1080000028014183
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 13,
-      "componentType": 5126,
-      "count": 25,
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 14,
-      "componentType": 5126,
-      "count": 25,
-      "type": "VEC2"
-    },
-    {
-      "bufferView": 15,
-      "componentType": 5123,
-      "count": 36,
-      "type": "SCALAR"
-    }
-  ],
-  "bufferViews": [
-    {
-      "buffer": 0,
-      "byteLength": 12264,
-      "byteOffset": 0,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 12264,
-      "byteOffset": 12264,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 8176,
-      "byteOffset": 24528,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 4284,
-      "byteOffset": 32704,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1260,
-      "byteOffset": 36988,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1260,
-      "byteOffset": 38248,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 840,
-      "byteOffset": 39508,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 672,
-      "byteOffset": 40348,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1392,
-      "byteOffset": 41020,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1392,
-      "byteOffset": 42412,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 928,
-      "byteOffset": 43804,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 1080,
-      "byteOffset": 44732,
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 300,
-      "byteOffset": 45812,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 300,
-      "byteOffset": 46112,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 200,
-      "byteOffset": 46412,
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 72,
-      "byteOffset": 46612,
-      "target": 34963
-    }
-  ],
-  "buffers": [
-    {
-      "byteLength": 46684,
-      "uri": "maceta_cempasuchil.bin"
-    }
-  ]
+	"asset":{
+		"generator":"Khronos glTF Blender I/O v5.2.40",
+		"version":"2.0"
+	},
+	"scene":0,
+	"scenes":[
+		{
+			"name":"Maceta_Cempasuchil_Editable",
+			"nodes":[
+				0
+			]
+		}
+	],
+	"nodes":[
+		{
+			"mesh":0,
+			"name":"maceta_cempasuchil"
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"name":"Gris_mate",
+			"pbrMetallicRoughness":{
+				"baseColorFactor":[
+					0.550000011920929,
+					0.550000011920929,
+					0.550000011920929,
+					1
+				],
+				"metallicFactor":0
+			}
+		}
+	],
+	"meshes":[
+		{
+			"name":"Maceta_cuerpo_hueco",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":0,
+						"NORMAL":1
+					},
+					"indices":2,
+					"material":0
+				}
+			]
+		}
+	],
+	"accessors":[
+		{
+			"bufferView":0,
+			"componentType":5126,
+			"count":460661,
+			"max":[
+				0.10379667580127716,
+				0.3389953374862671,
+				0.0838194191455841
+			],
+			"min":[
+				-0.09700370579957962,
+				0,
+				-0.09363649785518646
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":1,
+			"componentType":5126,
+			"count":460661,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":2,
+			"componentType":5125,
+			"count":2735940,
+			"type":"SCALAR"
+		}
+	],
+	"bufferViews":[
+		{
+			"buffer":0,
+			"byteLength":5527932,
+			"byteOffset":0,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":5527932,
+			"byteOffset":5527932,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":10943760,
+			"byteOffset":11055864,
+			"target":34963
+		}
+	],
+	"buffers":[
+		{
+			"byteLength":21999624,
+			"uri":"maceta_cempasuchil.bin"
+		}
+	]
 }

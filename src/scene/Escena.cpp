@@ -394,7 +394,7 @@ void Escena::construirCasaYOfrenda() {
                            {x, 2.45f, z}, azar(-4.0f, 4.0f), 3.0f, k - 1);
         }
 
-    // Faroles a los lados de la entrada del portal (el brazo apunta al centro)
+    // Faroles a los lados de la entrada del portal
     instanciar("farol", casa, "farol_portal_izq", {-4.3f, 0.0f, 3.7f}, 0.0f);
     instanciar("farol", casa, "farol_portal_der", {4.3f, 0.0f, 3.7f}, 180.0f);
     instanciar("pumpkin", casa, "calabaza_portal_1", {-2.6f, 0.15f, 2.9f}, 15.0f);
@@ -503,7 +503,7 @@ void Escena::construirCamino() {
         glm::vec3 izq = camino.izquierda(s);
         Nodo* par = grupo->agregar("faroles_" + std::to_string(k));
         par->colocar(c);
-        // los brazos apuntan en el sentido del camino para no cruzarse con el papel picado
+        // Orientar las caras de las linternas siguiendo el camino
         float haciaCasa = alinearX(camino.tangente(s));
         instanciar("farol", par, "farol_izq", izq * 1.55f, haciaCasa);
         instanciar("farol", par, "farol_der", -izq * 1.55f, haciaCasa);

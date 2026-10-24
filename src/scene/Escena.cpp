@@ -50,6 +50,24 @@ const Ficha kPropios[] = {
     {"farol", "Farol de hojalata", ""},
     {"entrada_panteon", "Portada del panteón", ""},
     {"casa_adobe", "Casa de adobe con portal", ""},
+    // Extras de la ofrenda, en la carpeta raíz de modelos propios.
+    {"botella_corona", "Botella de Corona", ""},
+    {"botella_victoria", "Botella de Victoria", ""},
+    {"jarro_cafe", "Jarro de barro con café", ""},
+    {"olla_barro", "Olla de barro con tapa", ""},
+    {"jarra_agua", "Jarra con agua", ""},
+    {"frutero", "Frutero", ""},
+    {"plato_tamales", "Plato de tamales", ""},
+    {"plato_mole", "Plato de mole", ""},
+    {"plato_carnitas", "Plato de carnitas", ""},
+    {"plato_tacos_dorados", "Plato de tacos dorados", ""},
+    {"dulce_alegria", "Alegría de amaranto", ""},
+    {"dulce_palanqueta", "Palanqueta", ""},
+    {"dulce_cocada", "Cocada", ""},
+    {"dulce_jamoncillo", "Jamoncillo con nuez", ""},
+    {"dulce_limon_relleno", "Limón relleno de coco", ""},
+    {"dulce_tamarindo", "Dulce de tamarindo", ""},
+    {"dulce_leche_estriado", "Dulce de leche estriado", ""},
 };
 
 const Ficha kLibreria[] = {

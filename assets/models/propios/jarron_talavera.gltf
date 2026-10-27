@@ -8,7 +8,8 @@
 		{
 			"name":"jarron",
 			"nodes":[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -16,12 +17,16 @@
 		{
 			"mesh":0,
 			"name":"jarron_talavera"
+		},
+		{
+			"mesh":1,
+			"name":"ramo_cempasuchil_optimizado"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"gris mate",
+			"name":"Gris_mate",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
 					0.550000011920929,
@@ -43,6 +48,19 @@
 						"NORMAL":1
 					},
 					"indices":2,
+					"material":0
+				}
+			]
+		},
+		{
+			"name":"Tallo_flor_01",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":3,
+						"NORMAL":4
+					},
+					"indices":5,
 					"material":0
 				}
 			]
@@ -76,6 +94,34 @@
 			"componentType":5125,
 			"count":860496,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":3,
+			"componentType":5126,
+			"count":95608,
+			"max":[
+				0.13314120471477509,
+				0.5959874391555786,
+				0.1074945330619812
+			],
+			"min":[
+				-0.1244288831949234,
+				0.2858700156211853,
+				-0.12008626013994217
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":4,
+			"componentType":5126,
+			"count":95608,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":5,
+			"componentType":5125,
+			"count":326058,
+			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
@@ -96,11 +142,29 @@
 			"byteLength":3441984,
 			"byteOffset":3529632,
 			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":1147296,
+			"byteOffset":6971616,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1147296,
+			"byteOffset":8118912,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1304232,
+			"byteOffset":9266208,
+			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":6971616,
+			"byteLength":10570440,
 			"uri":"jarron_talavera.bin"
 		}
 	]

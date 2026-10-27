@@ -361,14 +361,8 @@ void Escena::construirCasaYOfrenda() {
     instanciar("detail-bowl", n1, "cazuela_mole", {0.10f, sup, 0.50f}, 0.0f, 0.9f);
 
     // Nivel 2 (purgatorio): jarrón con flores, agua, calaveritas y plato con pan
-    Nodo* jarron = instanciar("jarron_talavera", n2, "jarron", {-0.72f, sup, 0.22f}, 20.0f);
-    for (int k = 0; k < 3; ++k) {
-        float a = 120.0f * static_cast<float>(k);
-        Nodo* f = instanciar("flor_cempasuchil", jarron, "flor_jarron_" + std::to_string(k + 1),
-                             {0.02f * std::cos(glm::radians(a)), 0.18f, 0.02f * std::sin(glm::radians(a))}, a);
-        f->rotacion.x = 12.0f;
-        f->escala = glm::vec3(1.25f);
-    }
+    // El archivo incluye el ramo optimizado; no duplicar flores externas.
+    instanciar("jarron_talavera", n2, "jarron", {-0.72f, sup, 0.22f}, 20.0f);
     instanciar("vaso_agua", n2, "vaso_agua", {0.72f, sup, 0.22f});
     for (float s : {-1.0f, 1.0f})
         instanciar("calaverita_azucar", n2, s < 0 ? "calaverita_n2_izq" : "calaverita_n2_der", {s * 0.38f, sup, 0.24f},

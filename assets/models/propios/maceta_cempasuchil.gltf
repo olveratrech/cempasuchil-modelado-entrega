@@ -52,55 +52,55 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":460661,
+			"count":99184,
 			"max":[
-				0.10379667580127716,
-				0.3389953374862671,
-				0.0838194191455841
+				0.10376589745283127,
+				0.33893659710884094,
+				0.08377772569656372
 			],
 			"min":[
-				-0.09700370579957962,
+				-0.09697579592466354,
 				0,
-				-0.09363649785518646
+				-0.09359130263328552
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":460661,
+			"count":99184,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5125,
-			"count":2735940,
+			"count":347235,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":5527932,
+			"byteLength":1190208,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5527932,
-			"byteOffset":5527932,
+			"byteLength":1190208,
+			"byteOffset":1190208,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":10943760,
-			"byteOffset":11055864,
+			"byteLength":1388940,
+			"byteOffset":2380416,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":21999624,
+			"byteLength":3769356,
 			"uri":"maceta_cempasuchil.bin"
 		}
 	]

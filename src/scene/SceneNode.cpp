@@ -12,6 +12,7 @@ void Lote::agregar(const glm::mat4& m, const glm::vec4& tinte) {
 }
 
 void Lote::subir() {
+    if(Modelo::soloCPU)return;
     liberar();
     if (!modelo || transformaciones.empty()) return;
 

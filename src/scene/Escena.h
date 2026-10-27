@@ -67,6 +67,7 @@ private:
     Nodo* crearTiraPapel(Nodo* padre, const std::string& nombre, const glm::vec3& posicion,
                          float giro, float ancho, int variante);
     void construirCasaYOfrenda();
+    void construirAltarAprobado(Nodo* altarAprobado);
     void construirCamino();
     void construirPanteon();
     void construirAlrededores();

@@ -48,6 +48,7 @@ add_executable(ModeladoCempasuchil
     src/scene/SceneNode.cpp
     src/scene/Camino.cpp
     src/scene/Escena.cpp
+    src/scene/AltarAprobado.cpp
     src/bibliotecas.cpp)
 
 # Generar un esquema compartido con ejecutable de Run definido.

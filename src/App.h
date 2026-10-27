@@ -7,6 +7,8 @@
 struct GLFWwindow;
 struct Opciones {
     int ancho=0, alto=0, msaa=4;
+    bool comprobar=false;
+    int vistaInicial=0;
 };
 class App {
 public:

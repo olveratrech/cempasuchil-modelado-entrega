@@ -21,6 +21,7 @@ int App::ejecutar(const Opciones& opciones) {
         return 1;
     }
 
+    int cuadros=0;
     double anterior = glfwGetTime();
     while (!glfwWindowShouldClose(ventana_)) {
         double ahora = glfwGetTime();
@@ -37,6 +38,11 @@ int App::ejecutar(const Opciones& opciones) {
         renderer_.dibujar(escena_.raiz(), camara_, anchoFb_, altoFb_);
 
         glfwSwapBuffers(ventana_);
+        if(op_.comprobar && ++cuadros==5) {
+            const GLenum error=glGetError();
+            registro::info("COMPROBACION GL: vista=%d, llamadas=%d, triangulos=%d, error=%u",op_.vistaInicial,renderer_.stats.llamadas,renderer_.stats.triangulos,error);
+            terminar();return error==GL_NO_ERROR?0:2;
+        }
     }
     terminar();
     return 0;
@@ -49,6 +55,7 @@ bool App::iniciar() {
         registro::fatal("No se pudo iniciar GLFW.");
         return false;
     }
+    if(op_.comprobar)glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -88,7 +95,7 @@ bool App::iniciar() {
     glfwSetKeyCallback(ventana_, alTeclear);
     glfwSetScrollCallback(ventana_, alDesplazar);
     glfwSetMouseButtonCallback(ventana_, alPulsar);
-    aplicarVista(0);
+    aplicarVista(op_.vistaInicial);
     return true;
 }
 

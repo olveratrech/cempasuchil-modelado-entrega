@@ -39,6 +39,7 @@ struct Primitiva {
 struct Malla {
     std::string nombre;
     std::vector<Primitiva> primitivas;
+    std::vector<glm::vec3> superficie; // geometría CPU de pan/dulces para verificar contacto
 };
 
 struct NodoModelo {
@@ -52,6 +53,7 @@ struct NodoModelo {
 
 class Modelo {
 public:
+    inline static bool soloCPU=false;
     std::string nombre;
     std::string ruta;
     std::vector<Malla> mallas;
@@ -70,6 +72,7 @@ public:
     int triangulos = 0;
     int vertices = 0;
     glm::vec3 min{0.0f}, max{0.0f};  // caja envolvente del modelo completo
+    float baseY = 0.0f; // mínimo Y de los vértices reales en coordenadas del modelo
     float radio() const { return glm::length(max - min) * 0.5f; }
     glm::vec3 centro() const { return (min + max) * 0.5f; }
 

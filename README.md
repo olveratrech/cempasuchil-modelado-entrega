@@ -58,3 +58,7 @@ En algunos teclados Mac se usa **Fn + F2**.
 ## Archivos principales
 
 `src/` contiene el programa; `shaders/`, los dos shaders de la escena; `assets/models/`, los modelos propios y de librería; `external/`, las bibliotecas necesarias para compilar. `CMakeLists.txt` define la compilación. `doc/` contiene el reporte. Las atribuciones y licencias de los recursos están en [CREDITOS.md](assets/CREDITOS.md).
+
+## Altar aprobado integrado
+
+La ofrenda fue sustituida por la composición aprobada, con los ajustes de posición, escala y ancho del petate autorizados. Detalles y comprobaciones en [INTEGRACION_ALTAR.md](doc/INTEGRACION_ALTAR.md). Para abrir directamente su vista: `./build-xcode/Release/ModeladoCempasuchil --altar`.

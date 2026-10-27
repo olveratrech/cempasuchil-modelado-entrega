@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <functional>
+#include <stdexcept>
 
 namespace {
 
@@ -26,6 +28,11 @@ const Ficha kPropios[] = {
     {"flor_cempasuchil", "Flor de cempasúchil", ""},
     {"petalo_cempasuchil", "Pétalo de cempasúchil", ""},
     {"veladora", "Veladora", "", "veladoras/"},
+    {"veladora_1", "Veladora 1", "", "veladoras/"},
+    {"veladora_2", "Veladora 2", "", "veladoras/"},
+    {"veladora_3", "Veladora 3", "", "veladoras/"},
+    {"veladora_4", "Veladora 4", "", "veladoras/"},
+    {"cabeza_cempasuchil", "Cabeza de cempasúchil", "Selección existente sin tallo", "../derivados/"},
     {"cirio_1", "Cirio casi nuevo", "", "cirios/"},
     {"cirio_2", "Cirio poco consumido", "", "cirios/"},
     {"cirio_3", "Cirio medio", "", "cirios/"},
@@ -133,7 +140,8 @@ bool Escena::cargar() {
     suelo->categoria = "procedural";
     info("terreno")->usos++;
 
-    construirCasaYOfrenda();
+    try { construirCasaYOfrenda(); }
+    catch(const std::exception& e){registro::error("Altar: %s",e.what());return false;}
     construirCamino();
     construirPanteon();
     construirAlrededores();
@@ -340,74 +348,62 @@ void Escena::construirCasaYOfrenda() {
 
     // La ofrenda se coloca sobre la banqueta del portal (0.15 m), frente al muro.
     Nodo* ofrenda = casa->agregar("Ofrenda");
-    ofrenda->colocar({0.0f, 0.15f, 0.95f});
-    Nodo* altar = instanciar("altar_muertos", ofrenda, "altar", {0, 0, 0});
-    instanciar("arco_cempasuchil", ofrenda, "arco", {0.0f, 0.0f, -0.55f}, 0.0f, 0.95f);
-
-    Nodo* n1 = altar->buscar("nivel_1");
-    Nodo* n2 = altar->buscar("nivel_2");
-    Nodo* n3 = altar->buscar("nivel_3");
-    const float sup = 0.455f;  // superficie del mantel en el marco local de cada nivel
-
-    // Nivel 1 (tierra): cirios, pan, veladoras, cazuela de mole y calaveritas
-    for (float s : {-1.0f, 1.0f}) {
-        instanciar(s < 0 ? "cirio_2" : "cirio_3", n1, s < 0 ? "cirio_izq" : "cirio_der",
-                   {s * 1.05f, sup, 0.58f});
-        instanciar("pan_de_muerto", n1, s < 0 ? "pan_izq" : "pan_der", {s * 0.70f, sup, 0.58f}, azar(0, 90));
-        instanciar("veladora", n1, s < 0 ? "veladora_n1_izq" : "veladora_n1_der", {s * 0.40f, sup, 0.60f});
-        instanciar("calaverita_azucar", n1, s < 0 ? "calaverita_n1_izq" : "calaverita_n1_der",
-                   {s * 0.20f, sup, 0.62f}, -s * 12.0f, 0.8f);
-    }
-    instanciar("detail-bowl", n1, "cazuela_mole", {0.10f, sup, 0.50f}, 0.0f, 0.9f);
-
-    // Nivel 2 (purgatorio): jarrón con flores, agua, calaveritas y plato con pan
-    // El archivo incluye el ramo optimizado; no duplicar flores externas.
-    instanciar("jarron_talavera", n2, "jarron", {-0.72f, sup, 0.22f}, 20.0f);
-    instanciar("vaso_agua", n2, "vaso_agua", {0.72f, sup, 0.22f});
-    for (float s : {-1.0f, 1.0f})
-        instanciar("calaverita_azucar", n2, s < 0 ? "calaverita_n2_izq" : "calaverita_n2_der", {s * 0.38f, sup, 0.24f},
-                   -s * 8.0f);
-    Nodo* plato = instanciar("detail-plate", n2, "plato", {0.0f, sup, 0.22f});
-    instanciar("pan_de_muerto", plato, "pan_plato", {0.0f, 0.03f, 0.0f}, 30.0f, 0.75f);
-
-    // Nivel 3 (cielo): fotografías de los difuntos, cruz, veladoras y calaveritas
-    instanciar("cross-wood", n3, "cruz", {0.0f, sup, -0.62f}, 0.0f, 0.5f);
-    instanciar("portarretrato_1", n3, "foto_izq", {-0.42f, sup, -0.30f}, 14.0f);
-    instanciar("portarretrato_2", n3, "foto_centro", {0.0f, sup, -0.36f});
-    instanciar("portarretrato_3", n3, "foto_der", {0.42f, sup, -0.30f}, -14.0f);
-    for (float s : {-1.0f, 1.0f}) {
-        instanciar("veladora", n3, s < 0 ? "veladora_n3_izq" : "veladora_n3_der", {s * 0.60f, sup, -0.05f});
-        instanciar("calaverita_azucar", n3, s < 0 ? "calaverita_n3_izq" : "calaverita_n3_der", {s * 0.22f, sup, -0.02f},
-                   -s * 10.0f, 0.75f);
-    }
-
-    // Piso frente al altar: cirios, sahumerio, veladoras, macetas, calabazas y cruz de pétalos
-    // Bases apoyadas en el portal, fuera de la cruz central y de las veladoras.
-    instanciar("cirio_1", ofrenda, "cirio_alto_piso", {-1.10f, 0.0f, 1.30f}, -8.0f);
-    instanciar("cirio_4", ofrenda, "cirio_consumido_piso", {1.05f, 0.0f, 1.25f}, 10.0f);
-    instanciar("cirio_5", ofrenda, "cirio_corto_piso", {1.23f, 0.0f, 1.45f}, -12.0f);
-    instanciar("sahumerio", ofrenda, "sahumerio", {0.0f, 0.012f, 1.20f}, 35.0f);
-    int k = 0;
-    for (const glm::vec3& p : {glm::vec3(-0.55f, 0.012f, 1.0f), glm::vec3(0.55f, 0.012f, 1.0f),
-                               glm::vec3(-0.75f, 0.012f, 1.6f), glm::vec3(0.75f, 0.012f, 1.6f)})
-        instanciar("veladora", ofrenda, "veladora_piso_" + std::to_string(++k), p);
-    for (float s : {-1.0f, 1.0f}) {
-        instanciar("maceta_cempasuchil", ofrenda, s < 0 ? "maceta_izq" : "maceta_der", {s * 1.55f, 0.0f, 0.25f}, s * 40.0f);
-        instanciar(s < 0 ? "pumpkin" : "pumpkin-tall", ofrenda, s < 0 ? "calabaza_izq" : "calabaza_der",
-                   {s * 1.55f, 0.0f, 0.95f}, s * 25.0f, 0.85f);
-    }
-    Nodo* cruzPetalos = nodoLote("petalo_cempasuchil", ofrenda, "cruz_de_petalos");
-    for (int i = 0; i < 520; ++i) {
-        glm::vec3 p;
-        if (i % 3 == 0) p = {azar(-0.42f, 0.42f), 0.0f, 1.30f + azar(-0.07f, 0.07f)};
-        else p = {azar(-0.07f, 0.07f), 0.0f, azar(0.95f, 1.95f)};
-        p.y = 0.014f + azar(0.0f, 0.004f);
-        cruzPetalos->lote->agregar(trs(p, azar(0, 360), azar(0.8f, 1.2f)));
-    }
-    info("petalo_cempasuchil")->usos += 520;
+    // Construir en coordenadas locales idénticas a la escena aprobada antes de colocar el conjunto.
+    Nodo* aprobado=ofrenda->agregar("Altar aprobado");
+    const int usosAntes=totalInstancias();
+    construirAltarAprobado(aprobado);
+    if(totalInstancias()-usosAntes!=3033)throw std::runtime_error("Cantidad de piezas importadas incorrecta");
+    ofrenda->colocar({0.0f,0.15f,1.40f},{0,0,0},glm::vec3(.95f));
+    // Ajuste autorizado: petate de 1.90 m de ancho, entre las bases de las columnas.
+    if(auto* petate=aprobado->buscar("petate"))petate->escala.x=1.f/(1.5f*.95f);
+    // Mantener los tonos de la composición de prueba, sólo dentro del altar importado.
+    std::function<void(Nodo*)> conservarTonos=[&](Nodo* n) {
+        if(n->raizInstancia && !n->hijos.empty() && n->hijos.front()->modelo) {
+            const auto& clave=n->hijos.front()->modelo->nombre;
+            const float tono=clave=="altar_muertos"?.22f:(clave.rfind("papel_",0)==0?.96f:(clave.rfind("portarretrato_",0)==0?.72f:1.f));
+            n->tinte=glm::vec4(tono,tono,tono,1);
+        }
+        for(auto& h:n->hijos)conservarTonos(h.get());
+    };
+    conservarTonos(aprobado);
+    // Comprobar el conjunto ya ajustado contra las medidas reales del portal (marco local de la casa).
+    aprobado->actualizar(ofrenda->matrizLocal());
+    glm::vec3 minimo(1e20f),maximo(-1e20f);
+    auto comprobarVolumen=[&](glm::vec3 lo,glm::vec3 hi,const glm::mat4& m) {
+        glm::vec3 a(1e20f),b(-1e20f);
+        for(int k=0;k<8;++k) {
+            const auto v=glm::vec3(m*glm::vec4((k&1)?hi.x:lo.x,(k&2)?hi.y:lo.y,(k&4)?hi.z:lo.z,1));
+            a=glm::min(a,v);b=glm::max(b,v);
+        }
+        minimo=glm::min(minimo,a);maximo=glm::max(maximo,b);
+        if(a.z<.012f || b.z>3.30f || a.x< -3.60f || b.x>3.60f || a.y<.1499f || b.y>2.57f)
+            throw std::runtime_error("La composición no cabe dentro del portal");
+        for(float x:{-3.4f,-1.15f,1.15f,3.4f}) {
+            if(b.x>x-.14f && a.x<x+.14f && b.z>2.86f && a.z<3.14f && b.y>.15f && a.y<.32f)
+                throw std::runtime_error("Altar o petate intersecta una base de columna");
+            if(b.x>x-.10f && a.x<x+.10f && b.z>2.90f && a.z<3.10f && b.y>.32f && a.y<2.62f)
+                throw std::runtime_error("Altar intersecta una columna del portal");
+        }
+    };
+    std::function<void(const Nodo*)> comprobarPortal=[&](const Nodo* n) {
+        if(n->modelo && n->malla>=0)
+            for(const auto& p:n->modelo->mallas[n->malla].primitivas)comprobarVolumen(p.min,p.max,n->mundo);
+        if(n->lote)for(const auto& instancia:n->lote->transformaciones)
+            for(const auto& parte:n->lote->modelo->plano)
+                for(const auto& p:n->lote->modelo->mallas[parte.malla].primitivas)
+                    comprobarVolumen(p.min,p.max,n->mundo*instancia*parte.matriz);
+        for(const auto& hijo:n->hijos)comprobarPortal(hijo.get());
+    };
+    comprobarPortal(aprobado);
+    registro::info("ENCAJE PORTAL: min=(%.4f,%.4f,%.4f), max=(%.4f,%.4f,%.4f); pared, suelo, techo y columnas libres",
+        minimo.x,minimo.y,minimo.z,maximo.x,maximo.y,maximo.z);
+    registro::info("ALTAR IMPORTADO: 3033 colocaciones; escala=0.95; casa Z=1.40; petate ancho=1.90 m");
+    // El bloque anterior consumía 2 giros y 520×5 muestras para la cruz de pétalos.
+    // Preservar la secuencia del papel del portal y las mariposas del entorno.
+    for(int i=0;i<2602;++i)(void)azar(0,1);
+    int k=0;
 
     // Papel picado colgado bajo el techo del portal
-    k = 0;
     for (float z : {1.75f, 2.75f})
         for (float x : {-1.6f, 1.6f}) {
             ++k;

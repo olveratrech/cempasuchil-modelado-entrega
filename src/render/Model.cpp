@@ -75,6 +75,7 @@ Primitiva crearPrimitiva(const std::vector<Vertice>& vertices, const std::vector
     }
 
 
+    if(Modelo::soloCPU)return p;
     glGenVertexArrays(1, &p.vao);
     glGenBuffers(1, &p.vbo);
     glGenBuffers(1, &p.ebo);
@@ -178,6 +179,8 @@ bool Modelo::cargar(const std::string& rutaArchivo) {
                     vs[idx[k]].normal = vs[idx[k + 1]].normal = vs[idx[k + 2]].normal = n;
                 }
             }
+            if(nombre=="pan_de_muerto"||nombre.rfind("dulce_",0)==0)
+                for(auto v:idx)malla.superficie.push_back(vs[v].pos);
             int mat = pr.material ? static_cast<int>(cgltf_material_index(d, pr.material)) : 0;
             malla.primitivas.push_back(crearPrimitiva(vs, idx, mat));
             triangulos += static_cast<int>(idx.size() / 3);
@@ -214,8 +217,34 @@ bool Modelo::cargar(const std::string& rutaArchivo) {
         for (cgltf_size i = 0; i < d->nodes_count; ++i)
             if (!d->nodes[i].parent) raices.push_back(static_cast<int>(i));
     }
+    // La esquina inferior de una caja rotada puede estar por debajo de la malla.
+    // Usar vértices reales evita trasladar un modelo demasiado arriba del mantel.
+    baseY = 1e30f;
+    std::vector<const cgltf_node*> pendientes;
+    for(int r:raices) pendientes.push_back(&d->nodes[r]);
+    while(!pendientes.empty()) {
+        const cgltf_node* n=pendientes.back();pendientes.pop_back();
+        cgltf_float datosMatriz[16];cgltf_node_transform_world(n,datosMatriz);
+        glm::mat4 m=glm::make_mat4(datosMatriz);
+        if(n->mesh) for(cgltf_size j=0;j<n->mesh->primitives_count;++j) {
+            const auto& pr=n->mesh->primitives[j];
+            if(pr.type!=cgltf_primitive_type_triangles)continue;
+            for(cgltf_size a=0;a<pr.attributes_count;++a) {
+                if(pr.attributes[a].type!=cgltf_attribute_type_position)continue;
+                const auto* pos=pr.attributes[a].data;
+                cgltf_size cantidad=pr.indices?pr.indices->count:pos->count;
+                for(cgltf_size v=0;v<cantidad;++v) {
+                    cgltf_size indice=pr.indices?cgltf_accessor_read_index(pr.indices,v):v;
+                    glm::vec3 punto;cgltf_accessor_read_float(pos,indice,&punto.x,3);
+                    baseY=std::min(baseY,(m*glm::vec4(punto,1)).y);
+                }
+            }
+        }
+        for(cgltf_size j=0;j<n->children_count;++j)pendientes.push_back(n->children[j]);
+    }
     cgltf_free(d);
     calcularPlano();
+    if(baseY>1e29f)baseY=min.y;
     return true;
 }
 
